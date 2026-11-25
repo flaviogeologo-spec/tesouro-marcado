@@ -1,0 +1,150 @@
+{
+  ".nojekyll": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "browser-client.js": {
+    "bytes": 3026,
+    "sha256": "007fe15b4b55ed5855276c1e0ae91b1dd611a884ba4f8282e3483a38240f2b04"
+  },
+  "browser-worker.mjs": {
+    "bytes": 3926,
+    "sha256": "cee4c899cdc6aeae8419129474722de923f808fe322e628d2ad01ce85d834029"
+  },
+  "chart-workbench.js": {
+    "bytes": 22838,
+    "sha256": "dbde2a6df96a7400b67d535057de9836c8da8841ee7dd648411a576540adb900"
+  },
+  "engine-6401ff9ccac884bbbe30.zip": {
+    "bytes": 665338,
+    "sha256": "6401ff9ccac884bbbe30f5c79ad7d68aeb36b388955e9d1519409ce21b4541f7"
+  },
+  "guia-rapido.pdf": {
+    "bytes": 211703,
+    "sha256": "dc708829f4b6e337c92766ca54c8d1aec37bf226861a3ecfba31ae4f17909bf0"
+  },
+  "historical.css": {
+    "bytes": 5123,
+    "sha256": "7c8b40e6d3e7a51316afa7f313ab02b8997469b6658b58af8a4b874c2e9d1d23"
+  },
+  "historical.html": {
+    "bytes": 16602,
+    "sha256": "0cd00a2014e8538724b66bbf2f68264f14b2cb8aaa90699432110ba296783e7b"
+  },
+  "historical.js": {
+    "bytes": 87993,
+    "sha256": "0061d1d2052806343a5175049c7fcaa1adcd23ad97c5319292bcd72e20b769d9"
+  },
+  "index.html": {
+    "bytes": 19133,
+    "sha256": "0d6c4a2be38df37c5798047491c1e089399035b7277e4bc4aabe938b4810af01"
+  },
+  "ipca-history.json": {
+    "bytes": 12265,
+    "sha256": "569d05d39e5a824b0843ab1491c529c2847b82aaeb3f917cd01f470f8019cadc"
+  },
+  "licenses/CPYTHON-LICENSE.txt": {
+    "bytes": 13804,
+    "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+  },
+  "licenses/PYODIDE-LICENSE.txt": {
+    "bytes": 16725,
+    "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+  },
+  "licenses/README.txt": {
+    "bytes": 1512,
+    "sha256": "dd2a6eae455a51d5508c709036599c59df97b5297b4e34917afa2234640c333a"
+  },
+  "licenses/plotly-LICENSE.txt": {
+    "bytes": 1086,
+    "sha256": "8c45d9eaf50c2f72dd9c7ab9ef440788ba58a3538484b5c51c1f17d5128752e7"
+  },
+  "licenses/tzdata-LICENSE": {
+    "bytes": 592,
+    "sha256": "33e8e5002d3512d3fcc2282b995e6bad9d334781b9c5ac31843f404900e1f3b4"
+  },
+  "licenses/tzdata-LICENSE_APACHE": {
+    "bytes": 11357,
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "manual-de-uso.pdf": {
+    "bytes": 481502,
+    "sha256": "5299ce5ba45f0ec5d940a9aabeef5c4f68e129ec13c1bb65f625452340910c53"
+  },
+  "market-history.js": {
+    "bytes": 15521,
+    "sha256": "981962ff9a671a638f23c96194593c0d5809dc69243f1f51d4e45724ba1af983"
+  },
+  "market-history.json": {
+    "bytes": 103727,
+    "sha256": "e08a983a843b14d30bb5e758f238afa21fbd8943823d4b1617ab2f1fcc0a3bb7"
+  },
+  "mtm-presentation.js": {
+    "bytes": 12937,
+    "sha256": "03cf98b00a0dfbe3c4bebe2eafb772c779283d6a8f831c952ce7157641ecc715"
+  },
+  "mtm-workspace.js": {
+    "bytes": 609319,
+    "sha256": "0060eee09f5134df61d0f61921664c73139d582ef1896a3db2f53efb22a4906f"
+  },
+  "plotly.min.js": {
+    "bytes": 4838938,
+    "sha256": "e2b0f77ee8156ff9d525852fe4acb7bfe7d85e8a2e1da0523f6d16209b848968"
+  },
+  "public-data.js": {
+    "bytes": 4665,
+    "sha256": "59856924674735a612fbd11ee6979e1f3d29b2251fb1599a09f4ae59593b1500"
+  },
+  "release.json": {
+    "bytes": 8951,
+    "sha256": "0bc32a39aab9b5dcc43f48319112d8945fbba008db2d463130b5c21859f87633"
+  },
+  "simple-screen.css": {
+    "bytes": 60623,
+    "sha256": "7e3031e1ec01c64dfe855e6116b80e84103c62e126528e1138e057d18ba77cc1"
+  },
+  "simple-screen.js": {
+    "bytes": 194223,
+    "sha256": "724db7e79124ba84a30e820005b226ff5a5b3f78ae1082c24a38c93090e55390"
+  },
+  "tesouro-marcado.svg": {
+    "bytes": 419,
+    "sha256": "2523b08c0d97174c287ca2882d775eba3707d8b9fa5a29aef4b7dff5e7a4bf9d"
+  },
+  "vendor/pyodide-314.0.7/numpy-2.4.6-cp314-cp314-pyemscripten_2026_0_wasm32.whl": {
+    "bytes": 2960568,
+    "sha256": "a292c1f5d7d8a2208cd5e94fc467604c131cabcd2fc14fed6eefde121e7fabdf"
+  },
+  "vendor/pyodide-314.0.7/pyodide-lock.json": {
+    "bytes": 119077,
+    "sha256": "5dc2fc119108bc148c7457dc86e7675b5c87e1cafd420b9c34c1eaef7b36c010"
+  },
+  "vendor/pyodide-314.0.7/pyodide.asm.mjs": {
+    "bytes": 1250344,
+    "sha256": "f7cdc8ece80678ceb712f8e65ebe6d3a83203a180c399865f49612a051693635"
+  },
+  "vendor/pyodide-314.0.7/pyodide.asm.wasm": {
+    "bytes": 9598218,
+    "sha256": "cc36e3cab04fdfc9a63ff13eb52eae2b911bf46c025cc7b281f394bd3de1d5e6"
+  },
+  "vendor/pyodide-314.0.7/pyodide.mjs": {
+    "bytes": 17931,
+    "sha256": "6f1d60f7bf529beb300f0f47983c921d3982363640ba20af0e38efdddbc66109"
+  },
+  "vendor/pyodide-314.0.7/python_dateutil-2.9.0.post0-py2.py3-none-any.whl": {
+    "bytes": 229892,
+    "sha256": "9b13365edf9c188f570baf9c540bbb3029ada2a2dacb9694b3659941693ee9e5"
+  },
+  "vendor/pyodide-314.0.7/python_stdlib.zip": {
+    "bytes": 2545637,
+    "sha256": "fa1957e5777068fc4f7437f96d860ae2fbe9c19732ba06c84e004ec16dd7dd7a"
+  },
+  "vendor/pyodide-314.0.7/six-1.17.0-py2.py3-none-any.whl": {
+    "bytes": 11050,
+    "sha256": "228c50f73aa7addf2c2ccf2979c256802a59ab69cad8152b31b9443cc8140f42"
+  },
+  "workspace-polish.css": {
+    "bytes": 23920,
+    "sha256": "c1f02739309cd068f69c9a64e091cc90ea384857f1061852d0306a00b8e9f242"
+  }
+}

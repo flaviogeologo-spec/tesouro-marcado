@@ -1,0 +1,48 @@
+name: Atualizar dados oficiais
+on:
+  schedule:
+    - cron: '17 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+concurrency:
+  group: atualizar-dados
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          path: app
+          persist-credentials: false
+          sparse-checkout: collectors
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: dados
+          path: dados
+      - name: Coletar cotações do Tesouro
+        id: market
+        continue-on-error: true
+        run: node app/collectors/update.mjs dados market-history
+      - name: Coletar IPCA do IBGE
+        id: ipca
+        continue-on-error: true
+        run: node app/collectors/update.mjs dados ipca-history
+      - name: Publicar bases validadas
+        working-directory: dados
+        run: |
+          git add -- market-history.json ipca-history.json
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Atualizar séries oficiais'
+            git push origin HEAD:refs/heads/dados
+          fi
+      - name: Informar falha de coleta
+        if: steps.market.outcome == 'failure' || steps.ipca.outcome == 'failure'
+        run: exit 1

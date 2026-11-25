@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com/flaviogeologo-spec/tesouro-marcado/dados/; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tesouro Marcado · Evolução histórica</title>
+  <link rel="icon" type="image/svg+xml" href="/tesouro-marcado/tesouro-marcado.svg">
+  <link rel="stylesheet" href="/tesouro-marcado/simple-screen.css">
+  <link rel="stylesheet" href="/tesouro-marcado/historical.css">
+  <link rel="stylesheet" href="/tesouro-marcado/workspace-polish.css">
+  <script src="/tesouro-marcado/mtm-presentation.js" defer></script>
+  <script src="/tesouro-marcado/mtm-workspace.js" defer></script>
+  <script src="/tesouro-marcado/market-history.js" defer></script>
+  <script src="/tesouro-marcado/public-data.js" defer></script>
+  <script src="/tesouro-marcado/browser-client.js" defer></script>
+  <script src="/tesouro-marcado/historical.js" defer></script>
+</head>
+<body class="historical-page">
+  <a class="skip" href="#history-form">Ir para a compra</a>
+  <header class="app-header"><div class="app-identity"><div class="brand"><img src="/tesouro-marcado/tesouro-marcado.svg" width="42" height="42" alt=""><div><h1>Tesouro <span>Marcado</span></h1></div></div><nav class="workspace-nav" aria-label="Áreas do aplicativo"><a href="/tesouro-marcado/" target="_blank" rel="noopener" title="Abre em uma nova guia">Simular saídas ↗</a><span aria-current="page">Histórico e projeção</span><details class="workspace-help"><summary>Ajuda</summary><div class="workspace-help-links"><a href="/tesouro-marcado/guia-rapido.pdf" target="_blank" rel="noopener">Guia rápido (PDF)</a><a href="/tesouro-marcado/manual-de-uso.pdf" target="_blank" rel="noopener">Manual completo (PDF)</a></div></details></nav></div></header>
+  <main class="historical-main">
+    <aside class="historical-inputs">
+      <h2>Sua compra</h2>
+      <p class="intro">Acompanhe sua posição e consulte o efeito das taxas no histórico e nos cenários futuros.</p>
+      <details id="position-files" class="position-files"><summary>Compras salvas</summary><label>Compra<select id="position-list" disabled><option value="">Abra a seção para consultar</option></select></label><button id="position-open" type="button" class="secondary" disabled>Abrir compra</button><div id="position-open-warning" hidden><p>Há dados em edição. Abrir outra compra substitui os campos, sem recalcular.</p><button id="position-confirm-open" type="button" class="secondary">Descartar edição e abrir</button><button id="position-cancel-open" type="button" class="text-action">Cancelar</button></div><p id="position-files-status" role="status"></p><button id="position-files-retry" type="button" class="text-action" hidden>Tentar carregar novamente</button></details>
+      <form id="history-form" novalidate>
+        <label class="check"><input id="history-actual" type="checkbox">Usar dados do comprovante</label>
+        <label>Título<select id="history-title"><option value="IPCA_PRINCIPAL_2050">Tesouro IPCA+ 2050</option><option value="RENDA_PLUS_2065">Tesouro RendA+ 2065</option></select></label>
+        <label>Data da compra<input id="history-purchase" type="date" required aria-describedby="history-availability history-quote-help"></label>
+        <small id="history-availability"></small>
+        <div class="history-quote-assist"><p id="history-quote-help" role="status"></p><div id="history-nearby-dates" class="quick-actions" hidden></div></div>
+        <label>Taxa da compra · IPCA + (% a.a.)<input id="history-rate" inputmode="decimal" placeholder="Ex.: 7,00" autocomplete="off" required></label>
+        <button id="history-use-quote" type="button" class="text-action" hidden></button>
+        <label id="history-budget-field">Valor investido (R$) · opcional<input id="history-budget" inputmode="decimal" placeholder="Em branco: gráfico em %" autocomplete="off"></label>
+        <small id="history-budget-help">O valor calcula uma quantidade estimada de títulos. A sobra fica fora da posição.</small>
+        <fieldset id="history-actual-fields" hidden disabled><legend>Dados efetivos da compra</legend><label>Quantidade de títulos<input id="history-quantity" inputmode="decimal" placeholder="Ex.: 3,25" autocomplete="off"></label><label>Data de liquidação<input id="history-settlement" type="date"></label><small>Informe a quantidade e a liquidação do comprovante. Estes valores não serão redimensionados pelo orçamento.</small></fieldset>
+        <details id="history-price-details"><summary>Preço da compra</summary><label><span id="history-pu-label">Preço pago por título (R$) · opcional</span><input id="history-pu" inputmode="decimal" placeholder="PU do comprovante" autocomplete="off"></label><small id="history-price-help">Sem esse preço, usamos o cálculo pela taxa informada e pelo IPCA histórico.</small></details>
+        <details id="history-costs"><summary>Custos e conferência</summary><label>Despesa da compra (R$)<input id="history-entry-fee" inputmode="decimal" value="0" autocomplete="off"></label><label>Despesa de cada venda simulada (R$)<input id="history-exit-fee" inputmode="decimal" value="0" autocomplete="off"></label><label>Base fiscal total (R$) · opcional<input id="history-tax-basis" inputmode="decimal" placeholder="Em branco: custo dos títulos" autocomplete="off"></label><small>A custódia é estimada pelo motor. Custos da compra não aumentam automaticamente a base fiscal.</small><fieldset><legend>Conferir um líquido da instituição · opcional</legend><label>Data da cotação<input id="history-reconcile-date" type="date"></label><label>Líquido informado (R$)<input id="history-institution-net" inputmode="decimal" autocomplete="off"></label><small>A conferência compara os valores da mesma data. O líquido informado não é reaplicado às simulações.</small></fieldset></details>
+        <fieldset id="position-save-fields" hidden disabled><legend>Guardar esta compra</legend><label>Nome da compra<input id="position-name" maxlength="120" placeholder="Ex.: IPCA+ · compra de fevereiro" autocomplete="off"></label><div class="compact-actions"><button id="position-save" type="button" class="secondary" disabled>Salvar compra</button><button id="position-copy" type="button" class="text-action" hidden>Salvar como outra compra</button></div><small>Grava os dados da compra e custos localmente. Abrir não recalcula; projeções e conferências não são gravadas neste registro.</small><p id="position-save-status" role="status"></p></fieldset>
+        <div class="historical-projection"><label class="check"><input id="history-project" type="checkbox">Mostrar projeção</label><fieldset id="history-projection-fields" hidden disabled><legend>Cenário futuro</legend><label>Até<input id="history-end" type="date"></label><label>Inflação estimada (% a.a.)<input id="history-inflation" inputmode="decimal" placeholder="Ex.: 4,50" autocomplete="off"></label><label>Taxa de mercado ao final · IPCA + (%)<input id="history-exit-rate" inputmode="decimal" placeholder="Ex.: 6,00" autocomplete="off" aria-describedby="history-projection-help"></label><small id="history-projection-help">A taxa varia gradualmente desde a última observada. Após calcular, alterar a taxa atualiza a projeção e o delta.</small></fieldset></div>
+        <div class="history-action-bar"><button id="history-submit" type="submit" disabled>Ver evolução</button>
+        <p id="form-status" role="status" aria-live="polite">Carregando as fontes históricas…</p>
+        <p id="history-error" role="alert" hidden></p></div>
+      </form>
+      <details class="historical-sources"><summary>Fontes e atualização</summary><p id="history-data-status"></p><p id="history-ipca-status"></p><p>Coleta automática diária de dados públicos. Nenhuma entrada da sua compra é enviada ao coletor.</p><button id="history-reload" type="button" class="secondary">Consultar atualização</button></details>
+    </aside>
+    <section class="historical-results" aria-labelledby="historical-result-title" aria-busy="false">
+      <div class="historical-heading"><div><h2 id="historical-result-title">Evolução da compra</h2></div><div class="historical-result-actions"><a href="#history-form">Editar compra</a><button id="history-export" type="button" class="secondary" disabled>Exportar HTML</button></div></div>
+      <div id="history-context" class="historical-context"><p>Informe a compra para consultar o histórico disponível.</p></div>
+      <p id="history-projection-summary" class="historical-projection-summary" role="status" aria-live="polite" hidden></p>
+      <p id="history-stale" role="status" hidden>Entradas alteradas. Clique em Ver evolução para atualizar.</p>
+      <div id="history-empty" class="historical-empty"><span>Valor da posição</span><div></div><p>Preencha a compra e clique em <strong>Ver evolução</strong> para consultar as curvas.</p><span>Tempo →</span></div>
+      <div id="history-chart-tools" class="history-chart-tools" hidden><div class="unit-switch" role="group" aria-label="Visão do gráfico"><button id="history-view-values" type="button" aria-pressed="true">Valores brutos</button><button id="history-view-delta" type="button" aria-pressed="false">Diferença (delta)</button></div><div class="history-chart-actions"><button id="history-compare" type="button" class="text-action" aria-controls="position-change" hidden>Comparar datas</button><button id="history-reset-view" type="button" class="text-action">Restaurar visão</button></div></div>
+      <div id="history-reading" hidden><div class="history-date-picker"><label for="history-date">Data consultada</label><div class="history-date-controls"><button id="history-date-prev" type="button" aria-label="Data anterior">‹</button><select id="history-date" aria-describedby="history-date-kind"></select><button id="history-date-next" type="button" aria-label="Próxima data">›</button></div><small id="history-date-kind"></small></div><div id="history-reading-values" class="history-reading-values"></div><p id="history-point" class="sr-only" role="status" aria-live="polite"></p></div>
+      <p id="history-reading-note" class="history-reading-note" hidden></p>
+      <p id="history-reading-context" class="history-reading-note" hidden></p>
+      <p id="history-view-help" class="history-view-help" hidden></p>
+      <p id="history-chart-status" class="history-view-help" role="status" hidden></p>
+      <button id="history-chart-retry" type="button" class="text-action" hidden>Tentar abrir o gráfico novamente</button>
+      <div id="history-chart" hidden tabindex="0" role="group" aria-label="Referência contratada e venda a mercado no histórico e no cenário selecionado" aria-describedby="history-chart-navigation history-point" aria-keyshortcuts="ArrowLeft ArrowRight Home End"></div>
+      <p id="history-chart-navigation" class="history-chart-navigation" hidden><span>Linha vertical · data consultada</span><span>Selecione um ponto ou, com o gráfico em foco, use ← e →. Home e End vão aos extremos.</span></p>
+      <p id="history-coverage" role="status"></p>
+      <p id="history-source-notice" class="history-view-help" role="status" hidden></p>
+      <section id="position-summary" class="position-summary" aria-labelledby="position-summary-title" hidden><h3 id="position-summary-title">Minha posição na data</h3><div id="position-values" class="history-reading-values"></div><details id="position-cash-panel"><summary>Líquido, impostos e custos</summary><p id="position-cash-status" role="status" hidden></p><button id="position-cash-retry" class="text-action" type="button" hidden>Tentar calcular novamente</button><div id="position-cash-details"></div><p id="position-reconciliation"></p></details></section>
+      <details id="position-risk" class="position-risk" hidden><summary>Meu risco em reais</summary><p id="position-risk-context"></p><div class="position-risk-controls"><label>Choques de taxa<select id="position-risk-range"><option value="50">Até ±0,50 p.p.</option><option value="100" selected>Até ±1,00 p.p.</option><option value="200">Até ±2,00 p.p.</option></select></label><label>Limite de queda bruta (R$) · opcional<input id="position-risk-limit" inputmode="decimal" autocomplete="off" placeholder="Em relação ao valor desta data"></label><button id="position-risk-run" type="button" class="secondary" disabled>Calcular risco nesta data</button></div>
+        <p id="position-risk-error" role="alert" hidden></p>
+        <p id="position-risk-status" role="status" aria-live="polite">Selecione uma data para avaliar os choques.</p>
+        <div id="position-risk-values" hidden></div>
+      </details>
+      <details id="position-change" class="position-risk" hidden>
+        <summary>Explicar a oscilação</summary>
+        <p id="position-change-context">Compare a venda bruta em duas datas com cotação histórica.</p>
+        <div class="position-risk-controls position-change-controls">
+          <label>Data inicial<select id="position-change-start" aria-describedby="position-change-context position-change-coverage"></select></label>
+          <label>Data final<select id="position-change-end" aria-describedby="position-change-context position-change-coverage"></select></label>
+          <button id="position-change-run" type="button" class="secondary" disabled>Explicar variação</button>
+        </div>
+        <p id="position-change-coverage" aria-live="polite"></p>
+        <button id="position-change-use-date" type="button" class="text-action" hidden>Usar data consultada como final</button>
+        <p id="position-change-status" role="status" aria-live="polite"></p>
+        <div id="position-change-values" hidden></div>
+      </details>
+      <details id="history-method"><summary>Como ler a comparação</summary><p>A referência contratada mantém a taxa real da compra e usa o IPCA mensal já divulgado, reconstruído com as regras do título. Ela não é uma cotação de resgate. A venda histórica usa o preço oficial de cada manhã, para a mesma quantidade de títulos.</p><p>Delta = valor de venda − referência contratada. O delta percentual usa a referência como denominador. Comparamos valores brutos, antes de impostos e custos. A sobra do valor disponível fica fora da posição.</p><p>Com Mostrar projeção, a inflação informada vale a partir do primeiro mês ainda sem IPCA divulgado. A curva de venda projetada parte do último preço oficial, com a taxa variando gradualmente até a selecionada. Linhas tracejadas identificam estimativas, inclusive em datas recentes do passado. Alterar a taxa final muda a projeção e o delta, preservando as cotações históricas.</p><p>O IPCA realizado é uma reconstrução com os dados hoje disponíveis; pode diferir das projeções usadas no preço oficial na época. Preços históricos ausentes continuam como lacunas. A carência do RendA+ é respeitada; esta consulta cobre somente a acumulação.</p></details>
+      <details id="history-table-details" hidden><summary>Tabela de valores por data</summary><p id="history-table-help">Selecione uma data para consultar. Com a data em foco, use ↑ e ↓ para percorrer as linhas.</p><p id="history-table-status" role="status" hidden></p><button id="history-table-retry" class="text-action" type="button" hidden>Tentar carregar o líquido novamente</button><div class="historical-table-scroll" tabindex="0" role="region" aria-label="Valores por data" aria-describedby="history-table-help"><table><caption id="history-table-caption" class="sr-only">Valores brutos por data</caption><thead id="history-table-head"></thead><tbody id="history-table"></tbody></table></div></details>
+    </section>
+  </main>
+  <footer><p>Fontes: <a href="https://www.tesourodireto.com.br/produtos/dados-sobre-titulos/historico-de-precos-e-taxas" target="_blank" rel="noopener">Tesouro Nacional</a> e <a href="https://sidra.ibge.gov.br/tabela/1737" target="_blank" rel="noopener">IBGE · IPCA</a>. Cada ponto de venda representa uma saída total independente.</p></footer>
+</body>
+</html>

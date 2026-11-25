@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com/flaviogeologo-spec/tesouro-marcado/dados/; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tesouro Marcado · Simule sua venda</title>
+  <link rel="icon" type="image/svg+xml" href="/tesouro-marcado/tesouro-marcado.svg">
+  <link rel="stylesheet" href="/tesouro-marcado/simple-screen.css">
+  <link rel="stylesheet" href="/tesouro-marcado/workspace-polish.css">
+  <script src="/tesouro-marcado/mtm-presentation.js" defer></script>
+  <script src="/tesouro-marcado/mtm-workspace.js" defer></script>
+  <script src="/tesouro-marcado/plotly.min.js" defer></script>
+  <script src="/tesouro-marcado/market-history.js" defer></script>
+  <script src="/tesouro-marcado/chart-workbench.js" defer></script>
+  <script src="/tesouro-marcado/browser-client.js" defer></script>
+  <script src="/tesouro-marcado/simple-screen.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#simulation-form">Ir para as entradas</a>
+  <header class="app-header"><div class="app-identity"><div class="brand"><img src="/tesouro-marcado/tesouro-marcado.svg" width="42" height="42" alt=""><div><h1>Tesouro <span>Marcado</span></h1></div></div><nav class="workspace-nav" aria-label="Áreas do aplicativo"><span aria-current="page">Simular saídas</span><a class="historical-entry" href="/tesouro-marcado/historical.html" target="_blank" rel="noopener" title="Abre em uma nova guia">Histórico e projeção ↗</a><details class="workspace-help"><summary>Ajuda</summary><div class="workspace-help-links"><a href="/tesouro-marcado/guia-rapido.pdf" target="_blank" rel="noopener">Guia rápido (PDF)</a><a href="/tesouro-marcado/manual-de-uso.pdf" target="_blank" rel="noopener">Manual completo (PDF)</a></div></details></nav></div><div class="document-bar"><label>Nome da simulação<input id="simulation-name" maxlength="120" placeholder="Dê um nome à simulação" autocomplete="off"></label><span id="document-state" role="status">Ainda sem simulação</span><details id="record-info" hidden><summary>Detalhes do registro</summary><p id="record-metadata"></p></details></div><div class="header-actions"><button id="open-saved-shortcut" type="button" class="secondary" aria-haspopup="dialog" aria-controls="continuity">Abrir</button><button id="save-simulation" type="button" class="secondary" disabled>Salvar</button><button id="save-copy" type="button" class="secondary" hidden>Salvar cópia</button><button id="export-simulation" type="button" class="secondary" disabled>Exportar HTML</button></div></header>
+
+  <dialog id="continuity" aria-labelledby="files-title"><div class="files-heading"><h2 id="files-title">Abrir simulação</h2><button id="close-files" type="button" class="secondary" aria-label="Fechar arquivos">Fechar</button></div><p>Resultados salvos neste navegador. Simulações com casas extras nas taxas são recalculadas ao abrir.</p><div class="saved-fields"><label>Simulações salvas<select id="saved-simulation"><option value="">Carregando…</option></select></label><p id="files-status" role="status"></p><div class="compact-actions"><button id="open-simulation" type="button" class="secondary" disabled>Abrir simulação</button><button id="refresh-saved" type="button" class="text-action">Atualizar lista</button></div></div><div id="open-warning" hidden><p>Há alterações não salvas nesta tela.</p><div class="compact-actions"><button id="save-before-open" type="button" class="secondary">Salvar e abrir</button><button id="discard-and-open" type="button" class="secondary">Abrir sem salvar</button><button id="cancel-open" type="button" class="text-action">Cancelar</button></div></div></dialog>
+  <main>
+    <div class="input-column"><div class="input-scroll"><div class="input-toolbar"><p id="input-summary" role="status">Entradas da simulação</p><button id="edit-inputs" type="button" class="secondary" aria-expanded="true" aria-controls="entry-panel" hidden>Recolher entradas</button></div><div id="entry-panel"><p id="suggestion-help" class="sr-only">Tab aceita a sugestão.</p><form id="simulation-form" novalidate>
+      <div class="entry-grid"><div class="purchase-a"><fieldset><legend><span class="scenario-badge">A</span> Sua compra</legend>
+        <div class="fields title-fields"><label>Título<select id="family"><option value="IPCA_PRINCIPAL">Tesouro IPCA+ 2050</option><option value="RENDA_PLUS">Tesouro RendA+ 2065</option></select></label></div>
+        <div class="fields acquisition-fields"><label>Data da compra<input id="purchase" type="date" required></label><div class="compound-field"><div class="control-heading"><span>Entrada por</span><select id="capital-mode" aria-label="Entrada por"><option value="BUDGET">Valor (R$)</option><option value="QUANTITY">Quantidade</option></select></div><label><span id="capital-label" class="sr-only">Valor disponível (R$)</span><input id="budget" inputmode="decimal" placeholder="100.000,00" data-suggestion="100.000,00" autocomplete="off" aria-describedby="capital-help"></label></div></div>
+        <small id="capital-help">Em branco: R$ 100.000,00.</small>
+        <div class="fields pricing-fields"><div class="compound-field"><div class="control-heading"><span>Compra por</span><select id="entry-mode" aria-label="Compra por"><option value="RATE">IPCA + taxa</option><option value="PU">Preço (R$)</option></select></div><label><span id="entry-label" class="sr-only">Taxa da compra (% a.a.)</span><input id="entry" inputmode="decimal" placeholder="6,25" data-suggestion="6,25" autocomplete="off" required></label></div><label>Inflação (IPCA) futura (% a.a)<input id="inflation" inputmode="decimal" value="4,5" placeholder="4,5" autocomplete="off" aria-describedby="inflation-help"></label></div><small id="inflation-help">Estimativa para os meses futuros.</small><details class="costs"><summary>Custos da instituição · A</summary><div class="fields"><label>Na compra (R$)<input id="entry-fee" inputmode="decimal" value="0" autocomplete="off"></label><label>Na venda (R$)<input id="exit-fee" inputmode="decimal" value="0" autocomplete="off"></label></div><small>O resultado já inclui impostos e custódia.</small></details></fieldset></div>
+      <div class="purchase-b"><label class="check comparison-switch"><span class="scenario-badge secondary-badge">B</span><span>Comparar outra compra</span><input id="compare-enabled" type="checkbox"></label><p class="comparison-empty">Cada compra tem suas condições. O período de venda e as taxas de saída são compartilhados.</p><section id="comparison-inputs" hidden aria-label="Entradas da simulação B"><div id="b-fixed"></div></section></div>
+      <div class="shared-window"><fieldset><legend><span>01</span> Quando vender</legend>
+        <div class="fields"><label>De<input id="start" type="date" required></label><label>Até<input id="end" type="date" required></label></div>
+        <div class="quick-actions" role="group" aria-label="Prazo a partir da compra"><button type="button" data-period-months="12">1 ano</button><button type="button" data-period-months="36">3 anos</button><button type="button" data-period-months="60">5 anos</button></div>
+        <small id="mesh-help">Simulamos uma venda a cada 15 dias, em dias permitidos pelo Tesouro.</small>
+      </fieldset>
+      <fieldset><legend><span>02</span> Taxas de saída · IPCA +</legend>
+        <div class="fields rate-fields"><label>Mínima (%)<input id="rate-min" inputmode="decimal" placeholder="4,00" data-suggestion="4,00" autocomplete="off" required></label><label>Máxima (%)<input id="rate-max" inputmode="decimal" placeholder="8,00" data-suggestion="8,00" autocomplete="off" required></label><label>Divisões<input id="divisions" type="number" min="1" max="20" step="1" value="4" placeholder="4" data-suggestion="4" required aria-describedby="division-help"></label></div>
+        <small id="division-help">4 divisões = até 5 taxas entre os limites.</small>
+        <button id="suggest-rates" class="text-action inline-action" type="button" disabled>Taxa da compra ± 1 p.p.</button>
+      </fieldset>
+      </div></div>
+    </form></div></div></div>
+    <section id="results" aria-labelledby="results-title" aria-busy="false">
+      <div class="result-heading"><div><h2 id="results-title">Resultado da simulação</h2></div><div class="metric-controls"><div id="metric" class="unit-switch" role="group" aria-label="Medida do gráfico"><button id="metric-net_redemption" type="button" aria-label="Valor a receber (R$)" aria-pressed="true" disabled><span>R$</span> A receber</button><button id="metric-nominal_profit" type="button" aria-label="Lucro estimado (R$)" aria-pressed="false" disabled><span>R$</span> Lucro</button><button id="metric-nominal_return" type="button" aria-label="Rendimento total (%)" title="Ganho ou perda no período, sem descontar a inflação." aria-pressed="false" disabled><span>%</span> Rendimento</button><button id="metric-real_return" type="button" aria-label="Retorno acima da inflação (%)" title="Ganho ou perda após descontar a inflação." aria-pressed="false" disabled><span>%</span> Acima da inflação</button></div></div></div>
+
+      <button id="chart-reset" type="button" class="secondary" hidden>Visão original</button>
+      <p id="record-status" role="status" aria-live="polite"></p>
+      <div id="comparison-display" class="comparison-display" role="group" aria-label="Simulações exibidas" hidden><label class="check"><input id="show-a" type="checkbox" checked><span class="line-key" aria-hidden="true"></span><span id="show-a-label">A</span></label><label class="check"><input id="show-b" type="checkbox" checked><span class="line-key dashed-key" aria-hidden="true"></span><span id="show-b-label">B</span></label></div>
+      <div id="chart-workbench" hidden><button id="open-overlays" type="button" aria-haspopup="dialog" aria-controls="overlays" disabled>Meta e ganho</button></div>
+      <p id="stale" role="status" hidden>Entradas alteradas. Clique em Simular saídas para atualizar o gráfico.</p>
+      <div id="chart-empty"><div class="empty-axis"><span>Valor de saída</span><span>Tempo →</span></div><p>O gráfico das saídas aparece aqui.</p></div>
+      <div id="chart" hidden tabindex="0" role="group" aria-label="Saídas simuladas por data e taxa" aria-describedby="chart-hint chart-keyboard-help"></div>
+      <p id="chart-hint" role="status" aria-live="polite" hidden>Arraste no gráfico para ampliar.</p>
+      <div id="chart-touch-panel" hidden><p id="chart-touch-value" role="status" aria-live="polite" hidden></p><button id="chart-touch-details" type="button" class="secondary" hidden>Conferir operação</button></div>
+      <div id="rate-history" class="rate-history" hidden><details id="history-disclosure"><summary><strong id="history-selected-title">Histórico de taxas · até 2 anos</strong></summary><div id="history-selected" class="chart-history-selected" hidden></div><p id="history-coverage"></p><div hidden><div id="history-numbers"></div><p id="history-status"></p></div></details><p id="history-alert" role="status" aria-live="polite" hidden></p></div>
+      <details id="chart-legend" hidden><summary>Legenda · mostrar ou ocultar linhas</summary><div id="chart-legend-list"></div></details>
+      <details id="point-details" hidden><summary>Conferir a saída selecionada</summary><p id="point-status" role="status"></p><dl id="point-values"></dl></details>
+      <details id="chart-keyboard-tools" hidden><summary>Selecionar pelo teclado</summary><p id="chart-keyboard-help">Foque o gráfico com Tab. Setas esquerda/direita consultam datas. Espaço inicia uma área. Setas ajustam o final; Shift + setas ajustam o início. Esquerda/direita movem um dia; Ctrl + esquerda/direita movem 15 dias. Cima/baixo ajustam o valor. Enter detalha, Esc cancela e 0 retorna à visão geral.</p><button id="start-keyboard-selection" type="button" class="text-action">Selecionar área no gráfico</button></details>
+      <p id="chart-keyboard-status" role="status" aria-live="polite" hidden></p>
+
+      <p id="coverage" role="status" hidden></p>
+      <details class="sampling-details"><summary>Datas calculadas</summary><p id="mesh-status" role="status"></p></details>
+      <p id="outside-period-status" role="status" hidden></p>
+      <div id="goal-notice" hidden><p id="goal-status" role="status" aria-live="polite"></p><button id="show-goal-metric" type="button" class="text-action" hidden>Exibir a medida da meta</button></div>
+      <details id="goal-query" hidden><summary>Quando a meta é atingida</summary><div id="goal-results"></div></details>
+      <div id="overlays" popover="auto" role="dialog" aria-labelledby="overlays-title">
+        <div class="objective-heading"><h3 id="overlays-title">Meta e ganho</h3><button id="close-overlays" type="button" aria-label="Fechar configuração">×</button></div>
+        <label class="objective-value-label">Valor<div class="objective-value-row"><input id="objective-value" inputmode="decimal" autocomplete="off" placeholder="Ex.: 1.000" aria-describedby="overlay-form-error"><select id="objective-unit" aria-label="Unidade do objetivo"><option value="BRL">R$</option><option value="PERCENT">%</option></select></div></label>
+        <div class="objective-selects"><label>Período<select id="objective-period"><option value="TOTAL">Na saída</option><option value="ANNUAL">Ao ano</option></select></label><label>Medida<select id="objective-measure"><option value="nominal_profit">Lucro</option><option value="net_redemption">Valor a receber</option></select></label></div>
+        <div class="objective-display"><label class="check"><input id="fit-overlays" type="checkbox" checked>Ajustar escala</label><label class="check"><input id="objective-fill" type="checkbox">Destacar área</label></div>
+        <p id="overlay-form-error" class="objective-message" role="status" aria-live="polite">Valor mínimo para a saída.</p>
+        <div class="objective-actions"><button id="clear-overlays" type="button" class="text-action">Remover</button><button id="cancel-overlays" type="button" class="secondary">Cancelar</button><button id="apply-overlays" type="button">Aplicar</button></div>
+        <div hidden inert aria-hidden="true"><input id="goal-enabled" type="checkbox"><div id="goal-inputs"><select id="goal-metric"><option value="net_redemption">Resgate líquido (R$)</option><option value="nominal_profit">Lucro líquido (R$)</option><option value="nominal_return">Retorno total (%)</option><option value="real_return">Retorno acima da inflação (%)</option></select><span id="goal-value-label"></span><input id="goal-value"><small id="goal-help"></small></div><input id="reference-enabled" type="checkbox"><div id="reference-inputs"><select id="reference-mode"><option value="PERCENT">Percentual (% a.a.)</option><option value="NOMINAL">Valor fixo (R$/ano)</option></select><span id="reference-label"></span><input id="reference-value"></div><input id="goal-fill" type="checkbox"><input id="reference-fill" type="checkbox"><small id="goal-range"></small><p id="overlay-status"></p></div>
+      </div>
+      <p id="refine-selection" hidden></p><p id="refine-status" role="status" aria-live="polite" class="sr-only"></p>
+      <details id="simulation-details" hidden><summary>Dados da simulação</summary>
+      <div class="result-actions"><span id="save-state">Ainda sem simulação</span></div>
+      <div id="simulation-facts"></div>
+      </details>
+      <details id="date-reading" aria-labelledby="reading-title" hidden><summary>Tabela de valores por data</summary>
+        <div class="reading-heading"><h3 id="reading-title">Pontos calculados</h3><details id="table-columns"><summary>Colunas exibidas</summary><div class="column-panel"><fieldset><legend>Valores em cada taxa</legend><div id="metric-columns" class="column-options"></div></fieldset><fieldset><legend>Taxas de saída</legend><div id="rate-columns" class="column-options"></div></fieldset><p>As escolhas também valem para salvar e exportar HTML.</p></div></details></div>
+        <p id="reading-context"></p>
+        <div class="table-wrap" id="reading-table-wrap" tabindex="0" role="region" aria-label="Pontos calculados, role horizontalmente para ver mais taxas"><table id="reading-table" class="points-matrix"><caption class="sr-only" id="reading-caption">Resultados por data e taxa</caption><thead id="reading-head"></thead><tbody id="reading-body"></tbody></table></div>
+        <p id="point-note">Clique em um valor para conferir a operação.</p>
+  
+      </details>
+      <p id="coverage-details" hidden></p>
+      <details class="scope" id="calculation-notes"><summary>Como funciona</summary><ul><li>Cada ponto é uma venda total independente. As curvas unem amostras; não representam probabilidades.</li><li>Limites iguais geram uma curva. A taxa da compra também entra, se estiver na janela.</li><li>O IPCA conhecido vai até o último mês disponível. Para meses futuros, vale a hipótese informada.</li><li>A e B compartilham datas no período em que ambos permitem saída; trechos individuais são preservados. Compare rentabilidade em % quando os capitais forem diferentes.</li><li>Cada taxa reúne as medidas escolhidas para A/B. Dados ausentes não viram zero.</li><li>Retorno total: ganho ou perda em todo o período, após impostos e custos, sem descontar a inflação.</li><li>Acima da inflação: ganho ou perda após descontar o efeito da inflação.</li><li>Retornos usam o custo dos títulos e da compra, sem sobra de caixa.</li><li>Referência: juros compostos em % ou ganho linear em R$/ano; ano de 365 dias, sem tributos ou custos adicionais presumidos.</li><li>RendA+: venda somente antes do início da renda. Anos intermediários são simulados; o limite atual é 2065. IPCA+: até 2050.</li></ul></details>
+    </section>
+  </main>
+  <div class="simulate-dock" role="region" aria-label="Simulação"><div class="simulation-feedback">
+    <p id="form-status" role="status" aria-live="polite">Preparando o cálculo neste navegador…</p>
+    <div id="form-error" role="alert" hidden></div>
+    <button id="confirm-purchase" type="button" class="secondary" hidden></button>
+  </div><button id="simulate" type="submit" form="simulation-form" disabled>Simular saídas</button></div>
+  <p id="calculation-notice" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+  <footer><p id="data-status" hidden></p><a href="/tesouro-marcado/licenses/README.txt">Licenças dos componentes</a></footer>
+</body>
+</html>
